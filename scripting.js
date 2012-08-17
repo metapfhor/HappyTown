@@ -1,50 +1,62 @@
-N=3;
-G=1;
-function Body(){
-	this.q = [N];
-	this.p = [N];
-	this.interactions = [];
-	this.separationWith[i][j]=function(b,r){
-		for(i=0;i<N;i++){
-			r[i]=this.q[i]-b.q[i];
-			r[N+1]+=r[i]*r[i];
-		}
-		r[N+1]=Math.sqrt(r[N+1]);
+var fps=2;
+var dt=1000/fps;
+var svg;
+var G=1;
+var bodyRegistry=[]
+
+function initWorld(){
+	body = document.getElementsByTagName("body")[0];
+	svg = document.createElement("svg");
+	svg.setAttribute("width",body.clientWidth);
+	svg.setAttribute("height",body.clientHeight);
+	document.appendChild(svg);
+	runSim();
+}
+
+function runSim(){
+
+}
+
+
+function HardSphere(m,x,y,r){
+	this.inverseMass=1/m;
+	this.x=x;
+	this.px=0;
+	this.y=y;
+	this.py=0;
+	this.r=r;
+	this.viz=initViz(x,y,r);
+	this.forceOn=function(HS){
+
 	}
-	this.interactWith=function(b){
-		
+	this.distSquaredWith=function(HS){
+		return (this.x-HS.x)*(this.x-HS.x)+(this.y-HS.y)*(this.y-HS.y)
+	}
+	this.move  = function(dt){
+		this.x+=dt*this.px
+		this.y+dt*this.py
 	}
 }
 
-MassiveBody.prototype = new Body(m){
-	this.m=m;
-	this.inverseM=1/m;
-	this.interactions[this.interactions.legnth]=this.massAct;
-	this.updatePos=function(dt){
-		for(i=0;i<N;i++){
-			q[i]+=inverseM*p[i];
-		}
-	}
-	this.massAct = function(b,f){
-		this.separationWith(b,f);
-		f[N+1]=G*this.m*b.m/(f[N+1]*f[N+1]);
-		for(i=0;i<N;i++){
-			f[i]=-f[i]/f[N+1];
-		}
-		r[N+1]=Math.sqrt(r[N+1]);
+function initViz(x,y,r){
+	var circle = document.createElement("circle");
+	circle.setAttribute("cx",x);
+	circle.setAttribute("cy",y);
+	circle.setAttribute("r",r);
+	return circle;
+}
+
+function addToSim(HS,viz){
+	bodyRegistry[bodyRegistry.length]=HS
+	if(viz){
+		svg.appendChild(HS.viz);
 	}
 }
 
-BodyHandler = function(){
-	this.b=[];
-	this.addBody=function(b){
-		this.b[this.b.length]=b;
-	}
-	this.interactbodies=function(){
-		for(i=0;i<this.b.length;i++){
-			for(j=i+1;){
-				
-			}
+function updatePos(dt){
+	for(var i=0;i<bodyRegistry.length;i++){
+		for(var j=i+1;j<bodyRegistry.length;j++){
+			
 		}
 	}
 }
